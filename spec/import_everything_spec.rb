@@ -2,6 +2,26 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 def mit(name,&b)
   it(name,&b) #if name == 'parses values'
 end
+
+Spec::Matchers.define :size do |exp_size|
+  match do |arr|
+    arr.size == exp_size
+  end
+  failure_message_for_should do |arr|
+    "Array is size #{arr.size}, expected #{exp_size}, array is #{arr.inspect}"
+  end
+end
+
+class MyProxyFoo
+  attr_accessor :obj_block
+  include FromHash
+  fattr(:obj) { obj_block[] }
+  def method_missing(sym,*args,&b)
+   # raise "sending #{args.inspect}"
+    obj.send(sym,*args,&b)
+  end
+end
+
 describe "ImportEverything" do
   describe SqlInsertParser do
     before do
@@ -54,6 +74,12 @@ describe "ImportEverything" do
         @sql = "INSERT into players (first ,LAST,'age') VALUES (\"Albert\", 'Pujols',29)"
         parser.columns.should == %w(first last age)
       end
+      it 'can handle multi line insert' do
+        @sql = "INSERT into players (first,last,age) 
+                VALUES (\"Albert\", 'Pujols',29)"
+        parser.values.should == ['Albert','Pujols',29]
+        parser.value_hash.should == @pujols_value_hash
+      end
     end
     
     describe 'file parsing' do
@@ -63,22 +89,35 @@ describe "ImportEverything" do
         @lines << "INSERT into players (first,last,age) VALUES (\"Albert\", 'Pujols',29)\n"
         @lines << "INSERT into players (first,last,age) VALUES (\"Hanley\", 'Ramirez',27);    \n    "
         @lines << "INSERT into players (first,last,age) VALUES (\"David\", 'Wright',26);       "
-        @sql = @lines.join("\n")
-        @parser = SqlInsertParser.new(:str => @sql)
       end
+      fattr(:sql) { @lines.join("\n") }
+      fattr(:parser) { SqlInsertParser.new(:str => sql) }
       it 'has right number of lines' do
-        @parser.lines.size.should == @lines.size
+        parser.lines.size.should == @lines.size
       end
       it 'has 3 probable lines' do
-        @parser.probable_insert_lines.size.should == 3
+        parser.probable_insert_lines.size.should == 3
       end
       it 'value hashes' do
-        @parser.value_hashes.size.should == 3
-        @parser.value_hashes.first.should == @pujols_value_hash
-        @parser.value_hashes[1].should == {'first' => 'Hanley', 'last' => 'Ramirez', 'age' => 27}
+        #raise parser.insert_lines.inspect
+        parser.value_hashes.size.should == 3
+        parser.value_hashes.first.should == @pujols_value_hash
+        parser.value_hashes[1].should == {'first' => 'Hanley', 'last' => 'Ramirez', 'age' => 27}
       end
       it 'row hashes' do
-        @parser.row_hashes.first.should == {:table => 'players', :values => @pujols_value_hash}
+        parser.row_hashes.first.should == {:table => 'players', :values => @pujols_value_hash}
+      end
+      describe 'multi line insert' do
+        before do
+          @lines[-3] = @lines[-3].gsub(/VALUES/,"\nVALUES").gsub(/players /,"players\n")
+        end
+        it 'right number of insert lines' do
+          #parser.insert_lines.size.should == 3
+          parser.insert_lines.should size(3)
+        end
+        it 'right value hash' do
+          parser.value_hashes.first.should == @pujols_value_hash
+        end
       end
     end
   end

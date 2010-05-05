@@ -49,8 +49,26 @@ class SqlInsertParser
   fattr(:probable_insert_lines) do
     lines.select { |x| LineParser.probable_insert?(x) }
   end
+  def get_insert_lines(lines)
+    if lines.empty?
+      []
+    elsif LineParser.comment?(lines.first)
+      get_insert_lines(lines[1..-1])
+    elsif LineParser.valid_insert?(lines.first)
+      [lines.first] + get_insert_lines(lines[1..-1])
+    elsif lines.size >= 2 && LineParser.valid_insert?(lines[0..1].join(" "))
+      [lines[0..1].join(" ")] + get_insert_lines(lines[2..-1])
+    elsif lines.size >= 3 && LineParser.valid_insert?(lines[0..2].join(" "))
+      [lines[0..2].join(" ")] + get_insert_lines(lines[2..-1])
+    else
+      get_insert_lines(lines[1..-1])
+    end
+  end
+  fattr(:insert_lines) do
+    get_insert_lines(lines)
+  end
   fattr(:line_parsers) do
-    probable_insert_lines.map { |ln| LineParser.new(:line => ln) }
+    insert_lines.map { |ln| LineParser.new(:line => ln) }
   end
   fattr(:value_hashes) do
     line_parsers.map { |x| x.value_hash }
@@ -66,7 +84,7 @@ class SqlInsertParser
       fattr(:insert_into_regex) { /INSERT\s+INTO\s+(\S+)/i }
       fattr(:columns_regex) { /\((.*)\)/i }
       fattr(:values_regex) { /VALUES\s+\((.*)\)/i }
-      fattr(:full_regex) { /#{insert_into_regex}\s+#{columns_regex}\s+#{values_regex}/i }
+      fattr(:full_regex) { /^\s*#{insert_into_regex}\s+#{columns_regex}\s+#{values_regex}/i }
       fattr(:regex_hash) do
         {:insert => insert_into_regex, :columns => columns_regex, :values => values_regex, :full => full_regex}
       end
@@ -75,8 +93,14 @@ class SqlInsertParser
       end
       def probable_insert?(str)
         str = str.strip
-        res = (str =~ insert_into_regex) && !(str =~ comment_regex)
+        res = (str =~ insert_into_regex) && !comment?(str)
         !!res
+      end
+      def valid_insert?(str)
+        !!(str =~ full_regex)
+      end
+      def comment?(str)
+        !!(str =~ comment_regex)
       end
     end
     fattr(:parsed_elements) do
