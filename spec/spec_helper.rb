@@ -7,3 +7,24 @@ require 'spec/autorun'
 Spec::Runner.configure do |config|
   
 end
+
+def mit(name,&b)
+  it(name,&b) #if name == 'parses values'
+end
+
+Spec::Matchers.define :size do |exp_size|
+  match do |arr|
+    arr.size == exp_size
+  end
+  failure_message_for_should do |arr|
+    "Array is size #{arr.size}, expected #{exp_size}, array is #{arr.inspect}"
+  end
+end
+
+def pujols_value_hash
+  {'first' => 'Albert', 'last' => 'Pujols', 'age' => 29}
+end
+
+def pujols_row_hash
+  {:table => 'players', :values => pujols_value_hash}
+end

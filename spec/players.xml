@@ -1,0 +1,24 @@
+<top>
+  <players>
+    <player>
+      <first>Albert</first>
+      <last>Pujols</last>
+      <age>29</age>
+    </player>
+    <player>
+      <first>David</first>
+      <last>Wright</last>
+      <age>26</age>
+    </player>
+    <player>
+      <first>Hanley</first>
+      <last>Ramirez</last>
+      <age>27</age>
+    </player>
+  </players>
+  <cities>
+    <city>
+      <name>Madison</name>
+    </city>
+  </cities>
+</top>
