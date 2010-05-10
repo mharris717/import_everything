@@ -26,36 +26,4 @@ module ImportEverything
     fattr(:file) { open(filename) }
     fattr(:str) { file.read }
   end
-  class DetermineType
-    include FromHash
-    def self.get_filename(file)
-      if file.kind_of?(String)
-        ''
-      else
-        file.first_responding(:original_filename, :filename, :path)
-      end
-    end
-    fattr(:filename) { self.class.get_filename(file) }
-    fattr(:file) { open(filename) }
-    fattr(:ext) { filename.split(".").last.downcase }
-    def parser_class
-      h = {'sqlite' => SqliteParser, 'sqlite3' => SqliteParser, 'csv' => CsvParser, 'xml' => XmlParser, 'sql' => SqlInsertParser, 'dmp' => SqlInsertParser, 'html' => TableParser}
-      h[ext] || (raise "no parser found for #{ext}")
-    end
-    def parser
-      parser_class.new(:file => file)
-    end
-  end
-  def self.get_parser(ops)
-    dt = DetermineType.new(ops)
-    dt.parser
-  end
-  def self.get_rows(ops)
-    get_parser(ops).cleaned_row_hashes
-  end
-  def self.each_row(ops)
-    get_rows(ops).group_by { |x| x[:table] }.each do |table,rows|
-      rows.each { |row| yield(table,row[:values]) }
-    end
-  end
 end
