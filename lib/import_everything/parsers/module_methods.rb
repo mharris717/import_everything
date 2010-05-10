@@ -6,9 +6,10 @@ module ImportEverything
   def self.get_rows(ops)
     get_parser(ops).cleaned_row_hashes
   end
-  def self.each_row(ops)
-    get_rows(ops).group_by { |x| x[:table] }.each do |table,rows|
-      rows.each { |row| yield(table,row[:values]) }
-    end
+  def self.each_row(ops,&b)
+    get_parser(ops).each_row(&b)
+  end
+  def self.each_table_and_rows(ops,&b)
+    get_parser(ops).each_table_and_rows(&b)
   end
 end

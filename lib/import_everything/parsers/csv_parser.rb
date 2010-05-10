@@ -9,5 +9,8 @@ module ImportEverything
       end
       res
     end
+    def required_fields
+      []
+    end
   end
 end

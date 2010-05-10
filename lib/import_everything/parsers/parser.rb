@@ -25,5 +25,26 @@ module ImportEverything
     fattr(:filename) { DetermineType.get_filename(file) }
     fattr(:file) { open(filename) }
     fattr(:str) { file.read }
+    
+    def each_row
+      each_table_and_rows do |table,rows|
+        rows.each { |row| yield(table,row) }
+      end
+    end
+    def each_table_and_rows
+      cleaned_row_hashes.group_by { |x| x[:table] }.each do |table,rows|
+        values = rows.map { |x| x[:values] }
+        yield(table,values)
+      end
+    end
   end
+  module ParserPreviewMod
+    fattr(:addl_required_fields) do
+      required_fields.select do |x| 
+        send(x).to_s.blank? 
+      end
+    end
+    fattr(:required_fields) { [] }
+  end
+  Parser.send(:include,ParserPreviewMod)
 end

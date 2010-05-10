@@ -21,7 +21,7 @@ describe "ImportEverything" do
     
     describe 'howard' do
       before do
-        @parser = TableParser.new(:filename => spec_file('howard.csv'), :table => 'howard')
+        @parser = TableParser.new(:filename => spec_file('howard.html'), :table => 'howard')
       end
       it 'row count' do
         @parser.value_hashes.should size(6)

@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'mharris_ext'
+require 'active_support'
 
 this_path = File.expand_path(File.dirname(__FILE__))
 require "#{this_path}/import_everything/ext"

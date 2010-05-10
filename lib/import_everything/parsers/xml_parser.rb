@@ -1,8 +1,8 @@
 module ImportEverything
   class XmlParser < Parser
     attr_accessor :root_path, :table_paths
-    fattr(:table_paths) { [['players','player'],['cities','city']] }
-    fattr(:root_path) { 'top' }
+    #fattr(:table_paths) { [['players','player'],['cities','city']] }
+    #fattr(:root_path) { 'top' }
     fattr(:raw_doc) { require 'hpricot'; Hpricot(str) }
     fattr(:doc) { raw_doc/root_path }
     fattr(:parsers) do
@@ -10,6 +10,9 @@ module ImportEverything
         docs = (doc/table_desc[0])
         TableParser.new(:table => table_desc[0], :doc => docs, :row_path => table_desc[1])
       end
+    end
+    def required_fields
+      [:root_path,:table_paths]
     end
   
     class TableParser < Parser
