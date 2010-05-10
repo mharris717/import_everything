@@ -2,4 +2,7 @@ require 'rubygems'
 require 'mharris_ext'
 
 this_path = File.expand_path(File.dirname(__FILE__))
-Dir["#{this_path}/import_everything/**/*.rb"].each { |x| require x }
+require "#{this_path}/import_everything/ext"
+paths = Dir["#{this_path}/import_everything/**/*.rb"]
+paths = paths.make_first { |path| %w(parser.rb line_parser.rb).include?(File.basename(path)) }
+paths.each { |x| require x }

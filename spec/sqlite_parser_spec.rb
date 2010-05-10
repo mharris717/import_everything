@@ -5,7 +5,11 @@ class TestDB
     fattr(:instance) { new }
   end
   fattr(:filename) { "/Code/wheeeee.sqlite3" }
-  fattr(:db) { SQLite3::Database.new(filename) }
+  fattr(:db) do
+    gem 'sqlite3-ruby'
+    require 'sqlite3'
+    SQLite3::Database.new(filename) 
+  end
   fattr(:create) do
     `rm -f #{filename}`
     db.execute("CREATE TABLE cities ( name varchar(255) )")
@@ -26,7 +30,9 @@ describe "ImportEverything" do
   describe SqliteParser do
     before do
       TestDB.instance.create
-      @parser = SqliteParser.new(:filename => TestDB.instance.filename)
+      #@parser = SqliteParser.new(:filename => TestDB.instance.filename)
+      @parser = ImportEverything.get_parser(:filename => TestDB.instance.filename)
+      @rows = ImportEverything.get_rows(:filename => TestDB.instance.filename)
     end
     it 'tables' do
       @parser.tables.should == ['cities','players']
@@ -38,6 +44,8 @@ describe "ImportEverything" do
     it 'row hashes' do
       @parser.cleaned_row_hashes.first.should == {:table => 'cities', :values => {'name' => 'Madison'}}
       @parser.cleaned_row_hashes[1].should == pujols_row_hash
+      @rows.first.should == {:table => 'cities', :values => {'name' => 'Madison'}}
+      @rows[1].should == pujols_row_hash
     end
   end
   

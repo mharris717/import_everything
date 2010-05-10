@@ -48,11 +48,39 @@ class String
   def to_num_if
     if self =~ /^\d+$/
       self.to_i
+    elsif self =~ /^[\d\.]+$/
+      self.to_f
     else
       self
     end
   end
   def fixed_obj
     strip.without_quotes.to_num_if
+  end
+end
+
+module Enumerable
+  def make_last
+    h = group_by { |x| !!yield(x) }
+    (h[false]||[]) + (h[true]||[])
+  end
+  def make_first
+    h = group_by { |x| !!yield(x) }
+    (h[true]||[]) + (h[false]||[])
+  end
+end
+
+class Hash
+  def cleaned_hash_values
+    map_value { |v| v.fixed_obj }
+  end
+end
+
+class Object
+  def first_responding(*methods)
+    methods.flatten.each { |x| return send(x) if respond_to?(x) }
+    #raise "none respond"
+    #raise local_methods.inspect
+    nil
   end
 end

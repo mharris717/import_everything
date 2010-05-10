@@ -8,6 +8,8 @@ Spec::Runner.configure do |config|
   
 end
 
+include ImportEverything
+
 def mit(name,&b)
   it(name,&b) #if name == 'parses values'
 end
@@ -27,4 +29,8 @@ end
 
 def pujols_row_hash
   {:table => 'players', :values => pujols_value_hash}
+end
+
+def spec_file(f)
+  File.expand_path(File.dirname(__FILE__)) + "/#{f}"
 end
