@@ -9,9 +9,10 @@ class TestDB
     gem 'sqlite3-ruby'
     require 'sqlite3'
     SQLite3::Database.new(filename) 
+    #SQLite3::Database.new(open("http://localhost:3000/wheeeee.sqlite3") { |f| f.read })
   end
-  fattr(:create) do
-    `rm -f #{filename}`
+  fattr(:crefate) do
+    `rm -f #{filename}` 
     db.execute("CREATE TABLE cities ( name varchar(255) )")
     db.execute("CREATE TABLE players ( first varchar(255), last varchar(255), age integer)")
     #raise db.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;").inspect
@@ -21,10 +22,13 @@ class TestDB
     db.execute("INSERT into cities (name) VALUES ('Madison')")
     raise "foo" unless db.execute("select count(*) from players").flatten.first.to_i == 3
   end
+  def create; end
 end
 def create_test_db!
   
 end
+
+# raise TestDB.instance.db.execute2("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;").flatten.inspect
 
 describe "ImportEverything" do
   describe SqliteParser do

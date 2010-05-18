@@ -68,7 +68,11 @@ describe "ImportEverything" do
         @lines << "INSERT into players (first,last,age) VALUES (\"Hanley\", 'Ramirez',27);    \n    "
         @lines << "INSERT into players (first,last,age) VALUES (\"David\", 'Wright',26);       "
       end
-      fattr(:sql) { @lines.join("\n") }
+      fattr(:raw_sql) { @lines.join("\n") }
+      fattr(:sql) do
+        File.create(spec_file("players.sql"),raw_sql)
+        raw_sql
+      end
       fattr(:parser) { SqlInsertParser.new(:str => sql) }
       it 'has right number of lines' do
         parser.lines.size.should == @lines.size

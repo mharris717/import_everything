@@ -5,7 +5,7 @@ module ImportEverything
       if file.kind_of?(String)
         ''
       else
-        file.first_responding(:original_filename, :filename, :path)
+        file.first_responding(:original_filename, :filename, :path, :name)
       end
     end
     fattr(:filename) { self.class.get_filename(file) }
@@ -22,7 +22,11 @@ module ImportEverything
     fattr(:parser_ops) { {:file => file}.merge(addl_ops) }
     def parser_class
       h = {'sqlite' => SqliteParser, 'sqlite3' => SqliteParser, 'csv' => CsvParser, 'xml' => XmlParser, 'sql' => SqlInsertParser, 'dmp' => SqlInsertParser, 'html' => TableParser}
-      h[ext] || (raise "no parser found for #{ext}")
+      h[ext].tap { |x| return x if x }
+      h.each do |k,klass|
+        return klass if ext =~ /^#{k}\d\d/
+      end
+      raise "no parser found for #{ext}"
     end
     def parser
 #      puts "parser ops is #{parser_ops.inspect}"

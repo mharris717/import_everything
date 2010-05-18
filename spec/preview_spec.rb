@@ -22,6 +22,7 @@ describe "ImportEverything" do
     describe 'xml' do
       before do
         @preview = Preview.new(:filename => spec_file('players.xml'))
+        #@preview.table_paths = nil
       end
       it 'should need fields' do
         @preview.addl_required_fields.should == [:root_path,:table_paths]

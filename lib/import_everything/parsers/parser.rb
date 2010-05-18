@@ -22,7 +22,7 @@ module ImportEverything
       end
     end
     def line_parsers; parsers; end
-    fattr(:filename) { DetermineType.get_filename(file) }
+    fattr(:filename) { ImportEverything::DetermineType.get_filename(file) }
     fattr(:file) { open(filename) }
     fattr(:str) { file.read }
     
@@ -36,6 +36,11 @@ module ImportEverything
         values = rows.map { |x| x[:values] }
         yield(table,values)
       end
+    end
+    def table_rows_hash
+      res = {}
+      each_table_and_rows { |table,rows| res[table] = rows }
+      res
     end
   end
   module ParserPreviewMod

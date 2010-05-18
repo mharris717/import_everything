@@ -1,6 +1,6 @@
 module ImportEverything
   class XmlParser < Parser
-    attr_accessor :root_path, :table_paths
+    attr_accessor :root_path, :table_paths, :xyz
     #fattr(:table_paths) { [['players','player'],['cities','city']] }
     #fattr(:root_path) { 'top' }
     fattr(:raw_doc) { require 'hpricot'; Hpricot(str) }

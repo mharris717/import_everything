@@ -4,6 +4,7 @@ describe "ImportEverything" do
   describe XmlParser do
     before do
       @parser = XmlParser.new(:filename => "/Code/import_everything/spec/players.xml", :root_path => 'top', :table_paths => [['players','player'],['cities','city']])
+      #@parser.table_paths = nil
     end
     it 'smoke' do
       2.should == 2

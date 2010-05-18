@@ -59,6 +59,12 @@ class String
   end
 end
 
+class Object
+  def fixed_obj
+    self
+  end
+end
+
 module Enumerable
   def make_last
     h = group_by { |x| !!yield(x) }

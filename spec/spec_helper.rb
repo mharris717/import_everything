@@ -34,3 +34,6 @@ end
 def spec_file(f)
   File.expand_path(File.dirname(__FILE__)) + "/#{f}"
 end
+
+def mylog(*args)
+end

@@ -1,6 +1,6 @@
 module ImportEverything
   def self.get_parser(ops)
-    dt = DetermineType.new(ops)
+    dt = ImportEverything::DetermineType.new(ops)
     dt.parser
   end
   def self.get_rows(ops)
@@ -11,5 +11,8 @@ module ImportEverything
   end
   def self.each_table_and_rows(ops,&b)
     get_parser(ops).each_table_and_rows(&b)
+  end
+  def self.preview(ops)
+    Preview.new(ops)
   end
 end
