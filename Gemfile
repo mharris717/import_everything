@@ -16,5 +16,9 @@ end
 gem "mharris_ext"
 gem "activesupport"
 gem 'hpricot'
-gem 'sqlite3'
+
+group :test do
+  gem 'sqlite3'
+end
+
 gem 'yard'
