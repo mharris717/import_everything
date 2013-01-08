@@ -1,32 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-class TestDB
-  class << self
-    fattr(:instance) { new }
-  end
-  fattr(:filename) { "/Code/wheeeee.sqlite3" }
-  fattr(:db) do
-    gem 'sqlite3-ruby'
-    require 'sqlite3'
-    SQLite3::Database.new(filename) 
-    #SQLite3::Database.new(open("http://localhost:3000/wheeeee.sqlite3") { |f| f.read })
-  end
-  fattr(:crefate) do
-    `rm -f #{filename}` 
-    db.execute("CREATE TABLE cities ( name varchar(255) )")
-    db.execute("CREATE TABLE players ( first varchar(255), last varchar(255), age integer)")
-    #raise db.execute("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;").inspect
-    db.execute("INSERT into players (first,last,age) VALUES ('Albert','Pujols',29)")
-    db.execute("INSERT into players (first,last,age) VALUES ('David','Wright',26)")
-    db.execute("INSERT into players (first,last,age) VALUES ('Hanley','Ramirez',27)")
-    db.execute("INSERT into cities (name) VALUES ('Madison')")
-    raise "foo" unless db.execute("select count(*) from players").flatten.first.to_i == 3
-  end
-  def create; end
-end
-def create_test_db!
-  
-end
+load "spec/helpers/test_db.rb"
 
 # raise TestDB.instance.db.execute2("SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;").flatten.inspect
 

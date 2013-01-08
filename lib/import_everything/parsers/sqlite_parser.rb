@@ -7,7 +7,6 @@ module ImportEverything
       f.path
     end
     fattr(:db) do
-      gem 'sqlite3-ruby'
       require 'sqlite3'
       #raise "#{filename} #{file.local_methods.inspect}"
       res = SQLite3::Database.new(filename) 

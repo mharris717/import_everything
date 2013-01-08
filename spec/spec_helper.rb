@@ -1,10 +1,10 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'import_everything'
-require 'spec'
-require 'spec/autorun'
+#require 'spec'
+#require 'spec/autorun'
 
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
   
 end
 
@@ -14,7 +14,7 @@ def mit(name,&b)
   it(name,&b) #if name == 'parses values'
 end
 
-Spec::Matchers.define :size do |exp_size|
+RSpec::Matchers.define :size do |exp_size|
   match do |arr|
     arr.size == exp_size
   end
