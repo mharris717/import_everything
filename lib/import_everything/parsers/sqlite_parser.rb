@@ -1,5 +1,5 @@
 module ImportEverything
-  class SqliteParser < Parser
+  class SqliteParser < Parser::ImpParsers
     fattr(:filfename) do
       f = Tempfile.new('somedb.sqlite3')
       f.binmode
@@ -8,10 +8,7 @@ module ImportEverything
     end
     fattr(:db) do
       require 'sqlite3'
-      #raise "#{filename} #{file.local_methods.inspect}"
-      res = SQLite3::Database.new(filename) 
-      #get_raw_tables(res)
-      #res
+      SQLite3::Database.new(filename) 
     end
     def get_raw_tables(db)
       sql = "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;"

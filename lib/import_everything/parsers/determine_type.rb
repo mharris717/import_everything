@@ -8,8 +8,13 @@ module ImportEverything
         file.first_responding(:original_filename, :filename, :path, :name)
       end
     end
+    
+    
     fattr(:filename) { self.class.get_filename(file) }
     fattr(:file) { open(filename) }
+    
+    # Get the file extension
+    # @return [String] file extension
     fattr(:ext) { filename.split(".").last.downcase }
     def method_missing(sym,*args,&b)
       if sym.to_s[-1..-1] == '='
@@ -18,8 +23,12 @@ module ImportEverything
         super
       end
     end
+    
+    # Store addl ops
     fattr(:addl_ops) { {} }
     fattr(:parser_ops) { {:file => file}.merge(addl_ops) }
+    
+    # Determines what parser class should be used for this file
     def parser_class
       h = {'sqlite' => SqliteParser, 'sqlite3' => SqliteParser, 'csv' => CsvParser, 'xml' => XmlParser, 'sql' => SqlInsertParser, 'dmp' => SqlInsertParser, 'html' => TableParser}
       h[ext].tap { |x| return x if x }
@@ -28,9 +37,21 @@ module ImportEverything
       end
       raise "no parser found for #{ext}"
     end
+    
+    # Creates the parser
     def parser
-#      puts "parser ops is #{parser_ops.inspect}"
       parser_class.new(parser_ops)
+    end
+    
+    module Include
+      fattr(:dt) do
+        DetermineType.new
+      end
+
+      %w(filename file).each do |m|
+        define_method(m) { dt.send(m) }
+        define_method("#{m}=") { |v| dt.send("#{m}=",v) }
+      end
     end
   end
 end

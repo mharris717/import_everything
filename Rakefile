@@ -47,3 +47,55 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
+
+
+require 'yard'
+YARD::Rake::YardocTask.new do |t|
+  #t.files   = ['lib/**/*.rb', OTHER_PATHS]   # optional
+  #t.options = ['--any', '--extra', '--opts'] # optional
+  t.options = ["--reload"]
+end
+
+namespace :doc do
+  task :generate do
+    puts `yardoc -e yard_ext.rb`
+  end
+  task :server do
+    puts `yard server -e yard_ext.rb --reload`
+  end
+end
+
+
+ if false
+    require 'pp'
+    File.open("test.txt","w") do |f|
+      f << "Statement\n"
+      PP.pp(statement,f)
+      f << "\n\n"
+    
+      modname = statement[0].source
+      mod = register ModuleObject.new(namespace, modname)
+      parse_block(statement[1], :namespace => mod)
+    
+      f << "modname\n"
+      PP.pp(modname,f)
+      f << "\n\n"
+    
+      f << "namespace\n"
+      PP.pp(namespace,f)
+      f << "\n\n"
+    
+      f << "Statement[0]\n"
+      PP.pp(statement[0],f)
+      f << "\n\n"
+    
+      f << "Statement[1]\n"
+      PP.pp(statement[1],f)
+      f << "\n\n"
+    
+    
+    end
+    exit
+  end
+  

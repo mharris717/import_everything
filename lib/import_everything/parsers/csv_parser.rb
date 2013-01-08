@@ -1,6 +1,8 @@
 module ImportEverything
   class CsvParser < Parser
     fattr(:delimiter) { "," }
+    
+    # Generates the value hashes
     def value_hashes
       require 'csv'
       res = []

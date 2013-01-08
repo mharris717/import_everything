@@ -1,5 +1,5 @@
 module ImportEverything
-  class XmlParser < Parser
+  class XmlParser < Parser::ImpParsers
     attr_accessor :root_path, :table_paths, :xyz
     #fattr(:table_paths) { [['players','player'],['cities','city']] }
     #fattr(:root_path) { 'top' }
@@ -15,7 +15,7 @@ module ImportEverything
       [:root_path,:table_paths]
     end
   
-    class TableParser < Parser
+    class TableParser < Parser::ImpParsers
       attr_accessor :doc, :table, :row_path
       include FromHash
       def row_docs

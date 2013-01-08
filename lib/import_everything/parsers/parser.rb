@@ -10,20 +10,17 @@ module ImportEverything
         {:table => row_hash[:table], :values => row_hash[:values].cleaned_hash_values}
       end
     end
-  
-    fattr(:value_hashes) do
-      parsers.map { |x| x.value_hashes }.flatten
-    end
+ 
     fattr(:row_hashes) do
-      if respond_to?(:parsers)
-        parsers.map { |x| x.row_hashes }.flatten
-      else
-        value_hashes.map { |x| {:table => table, :values => x} }
-      end
+      value_hashes.map { |x| {:table => table, :values => x} }
     end
-    def line_parsers; parsers; end
-    fattr(:filename) { ImportEverything::DetermineType.get_filename(file) }
-    fattr(:file) { open(filename) }
+    
+    def value_hashes
+      raise NotImplementedError.new("value_hashes in #{self.class}")
+    end
+    
+    include DetermineType::Include
+
     fattr(:str) { file.read }
     
     def each_row
@@ -52,4 +49,21 @@ module ImportEverything
     fattr(:required_fields) { [] }
   end
   Parser.send(:include,ParserPreviewMod)
+  
+  class Parser
+    class ImpParsers < Parser
+      # subclass must implement parsers or value_hashes
+      # if implemented, should return an array of line parsers
+      def parsers
+        raise NotImplementedError.new("parsers")
+      end
+      def line_parsers; parsers; end
+      fattr(:value_hashes) do
+        parsers.map { |x| x.value_hashes }.flatten
+      end
+      fattr(:row_hashes) do
+        parsers.map { |x| x.row_hashes }.flatten
+      end
+    end
+  end
 end

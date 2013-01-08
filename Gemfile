@@ -17,3 +17,4 @@ gem "mharris_ext"
 gem "activesupport"
 gem 'hpricot'
 gem 'sqlite3'
+gem 'yard'

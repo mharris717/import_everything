@@ -1,5 +1,5 @@
 module ImportEverything
-  class SqlInsertParser < Parser
+  class SqlInsertParser < Parser::ImpParsers
     fattr(:lines) do
       str.split(/\n|;/).map { |x| x.strip }.select { |x| x.present? }
     end
