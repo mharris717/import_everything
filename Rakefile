@@ -14,8 +14,8 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "ietest"
-  gem.homepage = "http://github.com/mharris717/ietest"
+  gem.name = "import_everything"
+  gem.homepage = "http://github.com/mharris717/import_everything"
   gem.license = "MIT"
   gem.summary = %Q{import everything}
   gem.description = %Q{import everything}
@@ -43,7 +43,7 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "ietest #{version}"
+  rdoc.title = "import_everything #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

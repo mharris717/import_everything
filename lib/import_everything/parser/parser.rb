@@ -22,7 +22,16 @@ module ImportEverything
     include DetermineType::Include
 
     fattr(:str) { file.read }
-    
+  end
+  module ParserPreviewMod
+    fattr(:addl_required_fields) do
+      required_fields.select do |x| 
+        send(x).to_s.blank? 
+      end
+    end
+    fattr(:required_fields) { [] }
+  end
+  module IterationHelpers
     def each_row
       each_table_and_rows do |table,rows|
         rows.each { |row| yield(table,row) }
@@ -40,15 +49,8 @@ module ImportEverything
       res
     end
   end
-  module ParserPreviewMod
-    fattr(:addl_required_fields) do
-      required_fields.select do |x| 
-        send(x).to_s.blank? 
-      end
-    end
-    fattr(:required_fields) { [] }
-  end
   Parser.send(:include,ParserPreviewMod)
+  Parser.send(:include,IterationHelpers)
   
   class Parser
     class ImpParsers < Parser

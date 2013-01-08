@@ -17,8 +17,7 @@ module ImportEverything
       end
     end
     def rows
-            #mylog "display_table", :rows => @rows
-            @rows
+      @rows
     end
     def to_hash
       {:keys => keys, :row_arrays => row_value_arrays, :table => table}
