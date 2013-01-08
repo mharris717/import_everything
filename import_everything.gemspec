@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "import_everything"
-  s.version = "0.1.1"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Mike Harris"]
@@ -51,7 +51,9 @@ Gem::Specification.new do |s|
     "spec/sql_parser_spec.rb",
     "spec/sqlite_parser_spec.rb",
     "spec/xml_parser_spec.rb",
+    "vol/filename_meth.rb",
     "vol/test_db_test.rb",
+    "vol/web_test.rb",
     "yard_ext.rb"
   ]
   s.homepage = "http://github.com/mharris717/import_everything"
