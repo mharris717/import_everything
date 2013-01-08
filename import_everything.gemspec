@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "import_everything.gemspec",
     "lib/import_everything.rb",
     "lib/import_everything/determine_type.rb",
     "lib/import_everything/ext.rb",
