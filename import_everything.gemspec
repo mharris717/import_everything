@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "import_everything"
-  s.version = "0.1.3"
+  s.version = "0.1.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Mike Harris"]
-  s.date = "2013-01-08"
+  s.date = "2013-01-10"
   s.description = "import everything"
   s.email = "mharris717@gmail.com"
   s.extra_rdoc_files = [
@@ -36,21 +36,24 @@ Gem::Specification.new do |s|
     "lib/import_everything/parsers/sqlite_parser.rb",
     "lib/import_everything/parsers/table_parser.rb",
     "lib/import_everything/parsers/xml_parser.rb",
+    "lib/import_everything/parsers/yaml_parser.rb",
     "lib/import_everything/preview.rb",
-    "spec/bets.html",
-    "spec/csv_parser_spec.rb",
+    "spec/data/bets.html",
+    "spec/data/database.yml",
+    "spec/data/howard.html",
+    "spec/data/players.csv",
+    "spec/data/players.sql",
+    "spec/data/players.xml",
     "spec/helpers/test_db.rb",
-    "spec/howard.html",
     "spec/import_everything_spec.rb",
     "spec/junk.rb",
-    "spec/players.csv",
-    "spec/players.sql",
-    "spec/players.xml",
+    "spec/parsers/csv_parser_spec.rb",
+    "spec/parsers/sql_parser_spec.rb",
+    "spec/parsers/sqlite_parser_spec.rb",
+    "spec/parsers/xml_parser_spec.rb",
+    "spec/parsers/yaml_parser_spec.rb",
     "spec/preview_spec.rb",
     "spec/spec_helper.rb",
-    "spec/sql_parser_spec.rb",
-    "spec/sqlite_parser_spec.rb",
-    "spec/xml_parser_spec.rb",
     "vol/filename_meth.rb",
     "vol/test_db_test.rb",
     "vol/web_test.rb",
@@ -74,7 +77,6 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_development_dependency(%q<bundler>, ["~> 1.2"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
-      s.add_development_dependency(%q<rcov>, [">= 0"])
     else
       s.add_dependency(%q<mharris_ext>, [">= 0"])
       s.add_dependency(%q<activesupport>, [">= 0"])
@@ -84,7 +86,6 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_dependency(%q<bundler>, ["~> 1.2"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
-      s.add_dependency(%q<rcov>, [">= 0"])
     end
   else
     s.add_dependency(%q<mharris_ext>, [">= 0"])
@@ -95,7 +96,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rdoc>, ["~> 3.12"])
     s.add_dependency(%q<bundler>, ["~> 1.2"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.4"])
-    s.add_dependency(%q<rcov>, [">= 0"])
   end
 end
 
