@@ -32,7 +32,7 @@ def pujols_row_hash
 end
 
 def spec_file(f)
-  File.expand_path(File.dirname(__FILE__)) + "/#{f}"
+  File.expand_path(File.dirname(__FILE__)) + "/data/#{f}"
 end
 
 def mylog(*args)

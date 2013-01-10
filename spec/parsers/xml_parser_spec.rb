@@ -1,9 +1,9 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe "ImportEverything" do
   describe XmlParser do
     before do
-      @parser = XmlParser.new(:filename => "/Code/orig/import_everything_all/import_everything/spec/players.xml", :root_path => 'top', :table_paths => [['players','player'],['cities','city']])
+      @parser = XmlParser.new(:filename => spec_file("players.xml"), :root_path => 'top', :table_paths => [['players','player'],['cities','city']])
       #@parser.table_paths = nil
     end
     it 'smoke' do
