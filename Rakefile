@@ -67,6 +67,22 @@ namespace :doc do
   end
 end
 
+namespace :rel do
+  task :all do
+    res = []
+    res << "bundle exec rake version:bump:patch"
+    res << "bundle exec rake gemspec"
+    res << "git add import_everything.gemspec"
+    res << "git commit -m gemspec"
+    res << "bundle exec rake install"
+    res << "bundle exec rake release"
+    res.each do |cmd|
+      puts cmd
+      puts `#{cmd}`
+    end
+  end
+end
+
 
  if false
     require 'pp'
