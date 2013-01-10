@@ -8,7 +8,7 @@ csv = "a,b,c
 4,5,6"
 
 def get_parsed(body,filename=nil)
-  uri = URI('http://localhost:4000/get')
+  uri = URI('http://importeverything.herokuapp.com/get')
   params = { :body => body, :filename => filename }
   uri.query = URI.encode_www_form(params)
 
@@ -21,8 +21,9 @@ rows = get_parsed csv
 puts rows.class
 pp rows
 
-sql = "insert into widgets (color,price) values ('Black',10);"
-sql = File.read("spec/players.sql")
+sql = "insert into widgets (color,price) values ('Black',10);
+insert into players (name,hr) values ('Babe',755);"
+#sql = File.read("spec/players.sql")
 
 rows = get_parsed sql, "widgets.sql"
 pp rows
