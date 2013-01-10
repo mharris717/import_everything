@@ -28,6 +28,10 @@ insert into players (name,hr) values ('Babe',755);"
 rows = get_parsed sql, "widgets.sql"
 pp rows
 
+yaml = File.read("spec/data/database.yml")
+rows = get_parsed yaml, "database.yml"
+pp rows
+
 if false
   
 
