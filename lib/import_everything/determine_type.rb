@@ -16,6 +16,7 @@ module ImportEverything
     # Get the file extension
     # @return [String] file extension
     fattr(:ext) { filename.split(".").last.downcase }
+    
     def method_missing(sym,*args,&b)
       if sym.to_s[-1..-1] == '='
         self.addl_ops[sym.to_s[0..-2]] = args.first
@@ -31,6 +32,7 @@ module ImportEverything
     # Determines what parser class should be used for this file
     def parser_class
       h = {'sqlite' => SqliteParser, 'sqlite3' => SqliteParser, 'csv' => CsvParser, 'xml' => XmlParser, 'sql' => SqlInsertParser, 'dmp' => SqlInsertParser, 'html' => TableParser}
+      h = h.merge('yaml' => YamlParser, 'yml' => 'YamlParser')
       h[ext].tap { |x| return x if x }
       h.each do |k,klass|
         return klass if ext =~ /^#{k}\d\d/
